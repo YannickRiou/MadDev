@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:alpha="0.8"
+    android:background="@drawable/maddolly"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="onClickWrite"
+        android:text="Send" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="onClickRead"
+        android:text="Read Char" />
+
+    <Button
+        android:id="@+id/playpause"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_below="@+id/button2"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/play"
+        android:onClick="onClickPlayPause" />
+
+    <TextView
+        android:id="@+id/timelapseStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/mManualMoveDolly"
+        android:paddingBottom="20dp" />
+
+    <LinearLayout
+        android:id="@+id/buttons"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/timelapseInfo"
+        android:paddingBottom="10dp">
+
+        <TextView
+            android:id="@+id/exposureTime_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="Temps d'exposition"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+            <com.cepheuen.elegantnumberbutton.view.ElegantNumberButton
+                android:id="@+id/exposureTime"
+                android:layout_width="wrap_content"
+                android:layout_height="47dp"
+                android:layout_gravity="center_horizontal"
+                android:orientation="vertical" />
+
+        <TextView
+            android:id="@+id/timeBetweenFrames_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="Délai entre les images"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+            <com.cepheuen.elegantnumberbutton.view.ElegantNumberButton
+                android:id="@+id/timeBetweenFrames"
+                android:layout_width="wrap_content"
+                android:layout_height="47dp"
+                android:layout_gravity="center_horizontal"
+                android:orientation="vertical" />
+
+        <TextView
+            android:id="@+id/nbSecFinal_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="Durée Timelapse Final"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+            <com.cepheuen.elegantnumberbutton.view.ElegantNumberButton
+                android:id="@+id/nbSecFinal"
+                android:layout_width="wrap_content"
+                android:layout_height="47dp"
+                android:layout_gravity="center_horizontal"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/timelapseInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/mManualMoveDolly"
+        android:paddingBottom="20dp"/>
+
+    <SeekBar
+        android:id="@+id/mManualMoveDolly"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/dolly"
+        android:max="100"
+        android:onClick="onClickSeek"
+        android:progress="50"
+        android:progressDrawable="@android:color/transparent"
+        android:thumb="@drawable/camera"
+        android:layout_alignParentBottom="true"/>
+
+    <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/mManualMoveDolly"
+        android:checkedButton="@+id/avancer"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:id="@+id/dirRadio">
+
+        <RadioButton
+            android:id="@+id/reculer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onRadioButtonClicked"
+            android:text="Reculer" />
+
+        <RadioButton
+            android:id="@+id/avancer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onRadioButtonClicked"
+            android:text="Avancer" />
+    </RadioGroup>
+
+
+</RelativeLayout>

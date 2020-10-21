@@ -10,9 +10,9 @@ double somErr = 0;
  int EMA_S = 0;          //initialization of EMA S
  
 
-double P =10;
-double I = 0;
-double D = 0;
+double P = 0.01;
+double I = 1;
+double D = 0.01;
 double consigne = 0;
 int i =0;
 

@@ -13,7 +13,7 @@ void setup() {
 
   Serial.begin(9600);
   
-  // Transmitter is connected to Arduino Pin #10  
+  // Transmitter is connected to Arduino Pin #3  
   mySwitch.enableTransmit(3);
   
   // Optional set protocol (default is 1, will work for most outlets)
@@ -23,7 +23,7 @@ void setup() {
    mySwitch.setPulseLength(170);
   
   // Optional set number of transmission repetitions.
-  // mySwitch.setRepeatTransmit(15);
+   //mySwitch.setRepeatTransmit(15);
   
 }
 
@@ -42,8 +42,6 @@ void loop() {
   mySwitch.send(4281660, 24);
   mySwitch.send(4281804, 24);
   mySwitch.send(4282124, 24);
-  delay(1000);  
-
 
   delay(1000);
 }

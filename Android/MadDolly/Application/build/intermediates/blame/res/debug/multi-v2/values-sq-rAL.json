@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "/Users/YannickRiou/Documents/Git/Android/MadDolly/Application/build/intermediates/incremental/mergeDebugResources/merged.dir/values-sq-rAL/values-sq-rAL.xml",
+            "outputFile": "D:\\Git\\Android\\MadDolly\\Application\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-sq-rAL\\values-sq-rAL.xml",
             "map": [
                 {
-                    "source": "/Users/YannickRiou/.gradle/caches/transforms-1/files-1.1/appcompat-v7-24.1.1.aar/bfeea5fc0b77ba4f89df03eafe949519/res/values-sq-rAL/values-sq-rAL.xml",
+                    "source": "C:\\Users\\MadPC\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-24.1.1.aar\\72fc7c5cd05c64d06951565e914d35f9\\res\\values-sq-rAL\\values-sq-rAL.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",

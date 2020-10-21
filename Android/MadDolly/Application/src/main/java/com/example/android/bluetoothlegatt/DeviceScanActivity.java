@@ -36,7 +36,7 @@ public class DeviceScanActivity extends Activity {
     private BluetoothAdapter mBluetoothAdapter;
     private boolean mScanning;
     private Handler mHandler;
-    private String mMadDeviceAddress = "30:AE:A4:5D:D6:2A";
+    private String mMadDeviceAddress = "80:7D:3A:C5:41:7E";
 
     private static final int REQUEST_ENABLE_BT = 1;
     // Stops scanning after 10 seconds.

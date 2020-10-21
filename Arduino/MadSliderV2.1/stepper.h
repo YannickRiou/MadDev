@@ -1,9 +1,11 @@
-// Define stepper driver connection with ESP32
 
+#include <TMC2208Stepper.h>                       // Include library
 
-#define EN_PIN    22  // Nano v3:  16 Mega:  38  //enable (CFG6)
-#define DIR_PIN   19//6  //      19      55  //direction
-#define STEP_PIN  23//7  //     18      54  //step
+TMC2208Stepper driver = TMC2208Stepper(&Serial2);  
+
+#define EN_PIN    5  
+#define DIR_PIN 4
+#define STEP_PIN  18
 
 // Main variables for stepper operations
 bool dir = true;
@@ -15,9 +17,19 @@ uint32_t positionInStep = 0;
 
 void stepperInit()
 {
+   
   pinMode(EN_PIN,OUTPUT);
   pinMode(STEP_PIN,OUTPUT);
-  pinMode(DIR_PIN,OUTPUT);
+ pinMode(DIR_PIN,OUTPUT);
+  Serial2.begin(115200);
+  driver.push();                // Reset registers
+
+  driver.pdn_disable(true);     // Use PDN/UART pin for communication
+  driver.I_scale_analog(false); // Use internal voltage reference
+  driver.rms_current(500);      // Set driver current 500mA
+  driver.toff(2);               // Enable driver in software
+  driver.microsteps(256);
+  driver.en_spreadCycle(0);
 }
 
 void stepperEnable()

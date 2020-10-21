@@ -1,5 +1,8 @@
 // ESP32 Support Library
+#include <Arduino.h>Votre position
+
 #include <WiFi.h>
+
 #include <HTTPClient.h>
 
 #include "stepper.h"
@@ -10,30 +13,23 @@
 void setup()
 {
   // Enable serial for debug only
-  Serial.begin(115200);
-  delay(5000);
+  //Serial.begin(115200);
+  delay(1000);
 
-  //wifiInit();
-  BLE_init();
+  wifiInit();
+  //BLE_init();
   stepperInit();
   stepperEnable();
 }
-
+bool motDir = true;
 // Main loop
 void loop()
 {
 
-  //if (playPause == "1")
+  if (playPause == "1")
   {
-    if(Dir=="1")
-    {
-      digitalWrite(DIR_PIN, HIGH);
-    }
-    else
-    {
-       digitalWrite(DIR_PIN, LOW);
-    }
-    stepperEnable();
+   
+   
     for (int i = 0; i < 40; i++)
     {
       digitalWrite(STEP_PIN, HIGH);
@@ -41,7 +37,15 @@ void loop()
       digitalWrite(STEP_PIN, LOW);
       delayMicroseconds(300); 
     }
-    stepperDisable();
+    if(motDir)
+    {
+      digitalWrite(DIR_PIN,HIGH);
+    }
+    else
+    {
+       digitalWrite(DIR_PIN,HIGH);
+    }
+    motDir=!motDir;
   }
   
   

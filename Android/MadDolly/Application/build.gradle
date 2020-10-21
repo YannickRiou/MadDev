@@ -2,10 +2,11 @@
 buildscript {
     repositories {
         jcenter()
+        google()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:1.2.3'
+        classpath 'com.android.tools.build:gradle:3.3.0'
     }
 }
 
@@ -21,8 +22,6 @@ repositories {
 }
 
 dependencies {
-    compile 'com.android.support:support-v4:23.0.0'
-    compile 'com.android.support:support-v13:23.0.0'
     compile 'com.android.support:cardview-v7:23.0.0'
     compile 'com.github.bhargavms:DotLoader:1.1.1'
     compile 'com.cepheuen.elegant-number-button:lib:1.0.2'

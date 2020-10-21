@@ -1,5 +1,3 @@
-
-
 // Lumix G9 Access point credentials
 const char* ssid = "MADG9";
 const char* password =  "";
@@ -84,5 +82,3 @@ void takeLongExposureShot(int sec)
 {
 
 }
-
-

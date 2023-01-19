@@ -1,8 +1,16 @@
-# BH1750FVI
+# BH1750 / BH1750FVI
 Digital Light Sensor
 
-Very simple and minimalistic driver for the BH1750FVI Digital Light Sensor.
-The included example shows how to use and connect the BH1750FVI to a ESP8266.
+
+Very easy to use driver for the BH1750 / BH1750FVI Digital Light Sensor.
+The included examples shows how to use and connect the BH1750FVI to a NodeMCU ESP8266, Arduino UNO and Arduino DUE.
+
 
 For Arduino IDE users:
-Just download as .ZIP and add as .ZIP library (Sketch->Include Library->Add .ZIP Library).
+
+Use the Library Manager to install this library.
+
+Or download as .ZIP and add as .ZIP library (Sketch->Include Library->Add .ZIP Library).
+
+
+Any questions, bugs or feature requests? Please open an issue!

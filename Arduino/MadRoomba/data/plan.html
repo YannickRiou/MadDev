@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+    <html>
+        <head>
+            <title>MadRoomba Web Server</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <link rel="icon" href="data:,">
+            <link rel="stylesheet" type="text/css" href="style.css">
+        </head>
+        <div class="topnav">
+            <a class="active" href="/">Home</a>
+            <a href="/plan">Plannification</a>
+            <a href="/stat">Statut</a>
+            <a href="/divers">Divers</a>
+        </div>
+        
+        <body>
+        <table class="mad-table">
+        <tbody>
+        <tr>
+        <td>&nbsp;</td>
+        <td>Lundi</td>
+        <td>Mardi</td>
+        <td>Mercredi</td>
+        <td>Jeudi</td>
+        <td>Vendredi</td>
+        <td>Samedi</td>
+        <td>Dimanche</td>
+        </tr>
+        <tr>
+        <td>Matin</td>
+        <td style="text-align:center"><label class="switch"><input type="checkbox" onchange="toggleCheckbox(this)" id="01"><span class="slider"></span></label></td>
+        <td style="text-align:center"><label class="switch"><input type="checkbox" onchange="toggleCheckbox(this)" id="02"><span class="slider"></span></label></td>
+        <td style="text-align:center"><label class="switch"><input type="checkbox" onchange="toggleCheckbox(this)" id="03"><span class="slider"></span></label></td>
+        <td style="text-align:center"><label class="switch"><input type="checkbox" onchange="toggleCheckbox(this)" id="04"><span class="slider"></span></label></td>
+        <td style="text-align:center"><label class="switch"><input type="checkbox" onchange="toggleCheckbox(this)" id="05"><span class="slider"></span></label></td>
+        <td style="text-align:center"><label class="switch"><input type="checkbox" onchange="toggleCheckbox(this)" id="06"><span class="slider"></span></label></td>
+        <td style="text-align:center"><label class="switch"><input type="checkbox" onchange="toggleCheckbox(this)" id="07"><span class="slider"></span></label></td>
+        </tr>
+        <tr>
+        <td>Apr&egrave;s-midi</td>
+        <td style="text-align:center"><label class="switch"><input type="checkbox" onchange="toggleCheckbox(this)" id="11"><span class="slider"></span></label></td>
+        <td style="text-align:center"><label class="switch"><input type="checkbox" onchange="toggleCheckbox(this)" id="12"><span class="slider"></span></label></td>
+        <td style="text-align:center"><label class="switch"><input type="checkbox" onchange="toggleCheckbox(this)" id="13"><span class="slider"></span></label></td>
+        <td style="text-align:center"><label class="switch"><input type="checkbox" onchange="toggleCheckbox(this)" id="14"><span class="slider"></span></label></td>
+        <td style="text-align:center"><label class="switch"><input type="checkbox" onchange="toggleCheckbox(this)" id="15"><span class="slider"></span></label></td>
+        <td style="text-align:center"><label class="switch"><input type="checkbox" onchange="toggleCheckbox(this)" id="16"><span class="slider"></span></label></td>
+        <td style="text-align:center"><label class="switch"><input type="checkbox" onchange="toggleCheckbox(this)" id="17"><span class="slider"></span></label></td>
+        </tr>
+        </tbody>
+        </table>
+        <script>function toggleCheckbox(element) {
+            var xhr = new XMLHttpRequest();
+            if(element.checked){ xhr.open("GET", "/update?id="+element.id+"&state=1", true); document.getElementById(element.id).checked = true; }
+            else { xhr.open("GET",  "/update?id="+element.id+"&state=0", true); document.getElementById(element.id).checked = false; }
+            xhr.send();
+          }
+          </script>
+          </body>
+</html>

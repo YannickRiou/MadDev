@@ -33,11 +33,7 @@ public:
 	BLECharacteristic* getFirst();
 	BLECharacteristic* getNext();
 	std::string toString();
-	void handleGATTServerEvent(
-			esp_gatts_cb_event_t      event,
-			esp_gatt_if_t             gatts_if,
-			esp_ble_gatts_cb_param_t* param);
-
+	void handleGATTServerEvent(esp_gatts_cb_event_t event, esp_gatt_if_t gatts_if, esp_ble_gatts_cb_param_t* param);
 
 private:
 	std::map<BLECharacteristic*, std::string> m_uuidMap;
@@ -52,23 +48,25 @@ private:
  */
 class BLEService {
 public:
-	BLEService(const char* uuid, uint32_t numHandles=10);
-	BLEService(BLEUUID uuid, uint32_t numHandles=10);
-
 	void               addCharacteristic(BLECharacteristic* pCharacteristic);
 	BLECharacteristic* createCharacteristic(const char* uuid, uint32_t properties);
 	BLECharacteristic* createCharacteristic(BLEUUID uuid, uint32_t properties);
 	void               dump();
 	void               executeCreate(BLEServer* pServer);
+	void			   executeDelete();
 	BLECharacteristic* getCharacteristic(const char* uuid);
 	BLECharacteristic* getCharacteristic(BLEUUID uuid);
 	BLEUUID            getUUID();
 	BLEServer*         getServer();
 	void               start();
+	void			   stop();
 	std::string        toString();
 	uint16_t           getHandle();
+	uint8_t			   m_instId = 0;
 
 private:
+	BLEService(const char* uuid, uint16_t numHandles);
+	BLEService(BLEUUID uuid, uint16_t numHandles);
 	friend class BLEServer;
 	friend class BLEServiceMap;
 	friend class BLEDescriptor;
@@ -77,21 +75,19 @@ private:
 
 	BLECharacteristicMap m_characteristicMap;
 	uint16_t             m_handle;
-	BLECharacteristic*   m_lastCreatedCharacteristic;
-	BLEServer*           m_pServer;
+	BLECharacteristic*   m_lastCreatedCharacteristic = nullptr;
+	BLEServer*           m_pServer = nullptr;
 	BLEUUID              m_uuid;
-	char                 deleteMe[10];
-	//FreeRTOS::Semaphore  m_serializeMutex;
-	FreeRTOS::Semaphore  m_semaphoreCreateEvt = FreeRTOS::Semaphore("CreateEvt");
-	FreeRTOS::Semaphore  m_semaphoreStartEvt  = FreeRTOS::Semaphore("StartEvt");
 
-	uint32_t             m_numHandles;
+	FreeRTOS::Semaphore  m_semaphoreCreateEvt = FreeRTOS::Semaphore("CreateEvt");
+	FreeRTOS::Semaphore  m_semaphoreDeleteEvt = FreeRTOS::Semaphore("DeleteEvt");
+	FreeRTOS::Semaphore  m_semaphoreStartEvt  = FreeRTOS::Semaphore("StartEvt");
+	FreeRTOS::Semaphore  m_semaphoreStopEvt   = FreeRTOS::Semaphore("StopEvt");
+
+	uint16_t             m_numHandles;
 
 	BLECharacteristic* getLastCreatedCharacteristic();
-	void               handleGATTServerEvent(
-		esp_gatts_cb_event_t      event,
-		esp_gatt_if_t             gatts_if,
-		esp_ble_gatts_cb_param_t* param);
+	void handleGATTServerEvent(esp_gatts_cb_event_t event, esp_gatt_if_t gatts_if, esp_ble_gatts_cb_param_t* param);
 	void               setHandle(uint16_t handle);
 	//void               setService(esp_gatt_srvc_id_t srvc_id);
 }; // BLEService

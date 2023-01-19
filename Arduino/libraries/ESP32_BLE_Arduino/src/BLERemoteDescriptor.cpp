@@ -9,12 +9,15 @@
 #include <sstream>
 #include "BLERemoteDescriptor.h"
 #include "GeneralUtils.h"
-#include <esp_log.h>
-#ifdef ARDUINO_ARCH_ESP32
+#if defined(ARDUINO_ARCH_ESP32) && defined(CONFIG_ARDUHAL_ESP_LOG)
 #include "esp32-hal-log.h"
+#define LOG_TAG ""
+#else
+#include "esp_log.h"
+static const char* LOG_TAG = "BLERemoteDescriptor";
 #endif
 
-static const char* LOG_TAG = "BLERemoteDescriptor";
+
 
 
 BLERemoteDescriptor::BLERemoteDescriptor(
@@ -27,6 +30,7 @@ BLERemoteDescriptor::BLERemoteDescriptor(
 	m_pRemoteCharacteristic = pRemoteCharacteristic;
 }
 
+
 /**
  * @brief Retrieve the handle associated with this remote descriptor.
  * @return The handle associated with this remote descriptor.
@@ -34,6 +38,15 @@ BLERemoteDescriptor::BLERemoteDescriptor(
 uint16_t BLERemoteDescriptor::getHandle() {
 	return m_handle;
 } // getHandle
+
+
+/**
+ * @brief Get the characteristic that owns this descriptor.
+ * @return The characteristic that owns this descriptor.
+ */
+BLERemoteCharacteristic* BLERemoteDescriptor::getRemoteCharacteristic() {
+	return m_pRemoteCharacteristic;
+} // getRemoteCharacteristic
 
 
 /**
@@ -45,7 +58,15 @@ BLEUUID BLERemoteDescriptor::getUUID() {
 } // getUUID
 
 
-std::string BLERemoteDescriptor::readValue(void) {
+std::string BLERemoteDescriptor::readValue() {
+	ESP_LOGD(LOG_TAG, ">> readValue: %s", toString().c_str());
+
+	// Check to see that we are connected.
+	if (!getRemoteCharacteristic()->getRemoteService()->getClient()->isConnected()) {
+		ESP_LOGE(LOG_TAG, "Disconnected");
+		throw BLEDisconnectedException();
+	}
+
 	m_semaphoreReadDescrEvt.take("readValue");
 
 	// Ask the BLE subsystem to retrieve the value for the remote hosted characteristic.
@@ -66,32 +87,31 @@ std::string BLERemoteDescriptor::readValue(void) {
 
 	ESP_LOGD(LOG_TAG, "<< readValue(): length: %d", m_value.length());
 	return m_value;
-	return "";
 } // readValue
 
 
-uint8_t BLERemoteDescriptor::readUInt8(void) {
+uint8_t BLERemoteDescriptor::readUInt8() {
 	std::string value = readValue();
 	if (value.length() >= 1) {
-		return (uint8_t)value[0];
+		return (uint8_t) value[0];
 	}
 	return 0;
 } // readUInt8
 
 
-uint16_t BLERemoteDescriptor::readUInt16(void) {
+uint16_t BLERemoteDescriptor::readUInt16() {
 	std::string value = readValue();
 	if (value.length() >= 2) {
-		return *(uint16_t*)(value.data());
+		return *(uint16_t*) value.data();
 	}
 	return 0;
 } // readUInt16
 
 
-uint32_t BLERemoteDescriptor::readUInt32(void) {
+uint32_t BLERemoteDescriptor::readUInt32() {
 	std::string value = readValue();
 	if (value.length() >= 4) {
-		return *(uint32_t*)(value.data());
+		return *(uint32_t*) value.data();
 	}
 	return 0;
 } // readUInt32
@@ -101,7 +121,7 @@ uint32_t BLERemoteDescriptor::readUInt32(void) {
  * @brief Return a string representation of this BLE Remote Descriptor.
  * @retun A string representation of this BLE Remote Descriptor.
  */
-std::string BLERemoteDescriptor::toString(void) {
+std::string BLERemoteDescriptor::toString() {
 	std::stringstream ss;
 	ss << "handle: " << getHandle() << ", uuid: " << getUUID().toString();
 	return ss.str();
@@ -114,18 +134,21 @@ std::string BLERemoteDescriptor::toString(void) {
  * @param [in] length The length of the data to send.
  * @param [in] response True if we expect a response.
  */
-void BLERemoteDescriptor::writeValue(
-		uint8_t* data,
-		size_t   length,
-		bool     response) {
+void BLERemoteDescriptor::writeValue(uint8_t* data, size_t length, bool response) {
 	ESP_LOGD(LOG_TAG, ">> writeValue: %s", toString().c_str());
+	// Check to see that we are connected.
+	if (!getRemoteCharacteristic()->getRemoteService()->getClient()->isConnected()) {
+		ESP_LOGE(LOG_TAG, "Disconnected");
+		throw BLEDisconnectedException();
+	}
+
 	esp_err_t errRc = ::esp_ble_gattc_write_char_descr(
 		m_pRemoteCharacteristic->getRemoteService()->getClient()->getGattcIf(),
 		m_pRemoteCharacteristic->getRemoteService()->getClient()->getConnId(),
 		getHandle(),
 		length,                           // Data length
 		data,                             // Data
-		ESP_GATT_WRITE_TYPE_NO_RSP,
+		response ? ESP_GATT_WRITE_TYPE_RSP : ESP_GATT_WRITE_TYPE_NO_RSP,
 		ESP_GATT_AUTH_REQ_NONE
 	);
 	if (errRc != ESP_OK) {
@@ -140,10 +163,8 @@ void BLERemoteDescriptor::writeValue(
  * @param [in] newValue The data to send to the remote descriptor.
  * @param [in] response True if we expect a response.
  */
-void BLERemoteDescriptor::writeValue(
-		std::string newValue,
-		bool        response) {
-	writeValue(newValue.data(), newValue.length());
+void BLERemoteDescriptor::writeValue(std::string newValue, bool response) {
+	writeValue((uint8_t*) newValue.data(), newValue.length(), response);
 } // writeValue
 
 
@@ -152,9 +173,7 @@ void BLERemoteDescriptor::writeValue(
  * @param [in] The single byte to write.
  * @param [in] True if we expect a response.
  */
-void BLERemoteDescriptor::writeValue(
-		uint8_t newValue,
-		bool    response) {
+void BLERemoteDescriptor::writeValue(uint8_t newValue, bool response) {
 	writeValue(&newValue, 1, response);
 } // writeValue
 
